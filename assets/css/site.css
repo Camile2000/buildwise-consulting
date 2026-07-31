@@ -192,7 +192,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
 
 .btn-light{border-color:rgba(255,255,255,.55);color:#fff;}
 .btn-light::before{background:#fff;}
-.btn-light:hover{color:var(--forest);border-color:#fff;}
+.btn-light:hover{border-color:#fff;}
 
 .btn-sm{padding:11px 20px;font-size:.85rem;}
 .nav .btn{padding:12px 22px;font-size:.88rem;}

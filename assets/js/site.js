@@ -498,31 +498,42 @@
   }
 
   /* ---------------------------------------------------------
-     Article : copier le lien.
-     Remplace un partage "Instagram" qui n'en etait pas un (Instagram
-     n'offre pas de lien de partage direct : l'icone ne faisait que
-     renvoyer vers le profil). Copier le lien fonctionne partout.
+     Article : partager / copier le lien.
+     Instagram n'offre aucun lien de partage direct (contrairement a
+     WhatsApp) : impossible d'ouvrir l'app avec le contenu pre-rempli
+     depuis un site web, c'est une restriction de la plateforme. On
+     declenche donc le menu de partage natif du telephone (Instagram y
+     apparait comme destination si l'app est installee) ; sur desktop,
+     ou ce menu n'existe pas, on copie simplement le lien.
   --------------------------------------------------------- */
   $$('.share-copy').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var url = btn.getAttribute('data-url') || window.location.href;
+      var title = btn.getAttribute('data-title') || document.title;
       var confirm = function () {
         btn.classList.add('is-copied');
         clearTimeout(btn._copyTimer);
         btn._copyTimer = setTimeout(function () { btn.classList.remove('is-copied'); }, 1600);
       };
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(url).then(confirm, confirm);
+      var copyLink = function () {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(confirm, confirm);
+        } else {
+          var ta = document.createElement('textarea');
+          ta.value = url;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); } catch (e) {}
+          document.body.removeChild(ta);
+          confirm();
+        }
+      };
+      if (navigator.share) {
+        navigator.share({ title: title, url: url }).catch(function () {});
       } else {
-        var ta = document.createElement('textarea');
-        ta.value = url;
-        ta.style.position = 'fixed';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.select();
-        try { document.execCommand('copy'); } catch (e) {}
-        document.body.removeChild(ta);
-        confirm();
+        copyLink();
       }
     });
   });
