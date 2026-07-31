@@ -373,7 +373,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
    MARQUEE
    ============================================================ */
 .marquee{
-  overflow:hidden;background:var(--gold);color:var(--forest);
+  overflow:hidden;background:#fff;color:var(--forest);
   padding:15px 0;position:relative;
   border-block:1px solid rgba(14,46,28,.14);
 }
@@ -384,10 +384,10 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
   font-family:'Inter',sans-serif;font-size:1.02rem;font-weight:600;letter-spacing:.02em;white-space:nowrap;
 }
 .marquee span::after{
-  content:"";width:15px;height:15px;flex-shrink:0;background:#fff;opacity:.92;
+  content:"";width:15px;height:15px;flex-shrink:0;background:var(--gold);opacity:.92;
   -webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;
 }
-/* Les 4 pictogrammes du logo (étincelle, croix, tulipe, lignes), repris fidèlement, en blanc, comme séparateurs. */
+/* Les 4 pictogrammes du logo (étincelle, croix, tulipe, lignes), repris fidèlement, en jaune, comme séparateurs. */
 /* L'étincelle est une forme fine et concave : à cadre identique, elle remplit bien moins de surface que les trois
    autres pictogrammes pleins, d'où un agrandissement dédié pour un poids visuel équivalent. */
 .marquee span:nth-of-type(4n+1)::after{width:20px;height:20px;-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2c.6 6.2 3.8 9.4 10 10-6.2.6-9.4 3.8-10 10-.6-6.2-3.8-9.4-10-10 6.2-.6 9.4-3.8 10-10Z'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2c.6 6.2 3.8 9.4 10 10-6.2.6-9.4 3.8-10 10-.6-6.2-3.8-9.4-10-10 6.2-.6 9.4-3.8 10-10Z'/%3E%3C/svg%3E");}
@@ -498,7 +498,17 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
 /* ============================================================
    PRICING
    ============================================================ */
-.prices{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;align-items:stretch;}
+.price-group + .price-group{margin-top:52px;}
+.price-group-head{margin-bottom:24px;}
+.price-group-tag{
+  display:inline-block;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--forest);
+  background:var(--sand);padding:7px 16px;border-radius:100px;
+}
+.price-group-head p{margin-top:10px;font-size:1rem;color:var(--ink-soft);}
+.prices{display:grid;gap:14px;align-items:stretch;}
+.prices.prices-2{grid-template-columns:repeat(2,1fr);max-width:600px;margin-inline:auto;}
+.prices.prices-3{grid-template-columns:repeat(3,1fr);}
 .price{
   position:relative;background:var(--paper);border:1px solid var(--line);border-radius:var(--r-m);
   padding:28px 22px;display:flex;flex-direction:column;
@@ -507,7 +517,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
 .price:hover{transform:translateY(-8px);box-shadow:var(--shadow-l);}
 .price .ic{display:block;color:var(--green-text);margin-bottom:14px;}
 .price .tier{font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--green-text);}
-.price .amt{font-family:'Inter',sans-serif;font-size:clamp(1.5rem,1.2rem + .9vw,1.95rem);font-weight:600;color:var(--forest);margin:14px 0 10px;letter-spacing:-.02em;}
+.price .amt{font-family:'Inter',sans-serif;font-size:clamp(1.5rem,1.2rem + .9vw,1.95rem);font-weight:600;color:var(--forest);margin:14px 0 10px;letter-spacing:-.02em;white-space:nowrap;}
 .price .amt em{font-style:normal;font-size:.62em;font-weight:600;opacity:.7;}
 .price .per{display:inline-block;width:fit-content;font-size:.78rem;font-weight:600;color:var(--green-text);background:var(--sand);padding:4px 12px;border-radius:100px;}
 .price .unit{margin-top:16px;padding-top:16px;border-top:1px solid var(--line);font-size:.85rem;color:var(--ink-soft);}
@@ -711,10 +721,19 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
   background:linear-gradient(90deg,var(--green),var(--gold));z-index:300;}
 
 /* ============================================================
+   MOTIF DE MARQUE
+   Motif de la charte, pose en fond des zones vertes designees.
+   L'attenuation est portee par le SVG lui-meme (stroke-opacity),
+   ce qui evite d'ajouter un calque et laisse la mise en page,
+   les espacements et le contenu strictement inchanges.
+   Declare apres .section-dark : meme specificite, donc c'est
+   bien ce background-image qui s'applique par-dessus le vert.
+   ============================================================ */
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media(max-width:1080px){
-  .prices{grid-template-columns:repeat(3,1fr);}
   .grid-4{grid-template-columns:repeat(2,1fr);}
   .stats{grid-template-columns:repeat(2,1fr);row-gap:34px;}
 }
@@ -744,7 +763,7 @@ button{font:inherit;color:inherit;background:none;border:none;cursor:pointer;}
 }
 @media(max-width:680px){
   .grid-3,.grid-2,.grid-4{grid-template-columns:1fr;}
-  .prices{grid-template-columns:1fr;}
+  .prices.prices-2,.prices.prices-3{grid-template-columns:1fr;max-width:none;}
   .steps{grid-template-columns:1fr;}
   .step::after{display:none;}
   .stats{grid-template-columns:1fr 1fr;gap:26px;}
