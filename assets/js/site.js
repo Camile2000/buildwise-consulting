@@ -458,4 +458,72 @@
      Current year
   --------------------------------------------------------- */
   $$('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
+
+  /* ---------------------------------------------------------
+     Blog : filtres par categorie + recherche live.
+     Le tri se fait cote client sur des attributs data- deja
+     presents dans le HTML, aucune requete reseau necessaire.
+  --------------------------------------------------------- */
+  var postGrid = $('.post-grid');
+  if (postGrid) {
+    var pills = $$('.filter-pill');
+    var searchInput = $('.search-box input');
+    var cards = $$('.post-card', postGrid);
+    var emptyMsg = $('.post-empty');
+    var activeCat = 'tous';
+
+    function applyBlogFilter() {
+      var q = ((searchInput && searchInput.value) || '').trim().toLowerCase();
+      var visible = 0;
+      cards.forEach(function (card) {
+        var matchCat = activeCat === 'tous' || card.getAttribute('data-cat') === activeCat;
+        var matchText = !q || (card.getAttribute('data-search') || '').indexOf(q) !== -1;
+        var show = matchCat && matchText;
+        card.classList.toggle('is-hidden', !show);
+        if (show) visible++;
+      });
+      if (emptyMsg) emptyMsg.classList.toggle('show', visible === 0);
+    }
+
+    pills.forEach(function (p) {
+      p.addEventListener('click', function () {
+        pills.forEach(function (o) { o.classList.remove('active'); o.setAttribute('aria-pressed', 'false'); });
+        p.classList.add('active');
+        p.setAttribute('aria-pressed', 'true');
+        activeCat = p.getAttribute('data-filter');
+        applyBlogFilter();
+      });
+    });
+    if (searchInput) searchInput.addEventListener('input', applyBlogFilter);
+  }
+
+  /* ---------------------------------------------------------
+     Article : copier le lien.
+     Remplace un partage "Instagram" qui n'en etait pas un (Instagram
+     n'offre pas de lien de partage direct : l'icone ne faisait que
+     renvoyer vers le profil). Copier le lien fonctionne partout.
+  --------------------------------------------------------- */
+  $$('.share-copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var url = btn.getAttribute('data-url') || window.location.href;
+      var confirm = function () {
+        btn.classList.add('is-copied');
+        clearTimeout(btn._copyTimer);
+        btn._copyTimer = setTimeout(function () { btn.classList.remove('is-copied'); }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(confirm, confirm);
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = url;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+        confirm();
+      }
+    });
+  });
 })();
