@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="BookSeed Learning &amp; Co">
+  <title>BookSeed Learning &amp; Co</title>
+  <!-- Page / sheet -->
+  <rect x="9" y="7" width="82" height="86" rx="9" fill="#FFFFFF"/>
+
+  <!-- Top-left : seed sparkle on green field -->
+  <rect x="18" y="16" width="29" height="30" rx="3" fill="#57BE6D"/>
+  <path d="M32.5 20.5c.6 6.2 3.8 9.4 10 10-6.2.6-9.4 3.8-10 10-.6-6.2-3.8-9.4-10-10 6.2-.6 9.4-3.8 10-10Z" fill="#FFFFFF"/>
+
+  <!-- Top-right : growth cross -->
+  <path d="M63.5 16h10.5v7.5H81.5v10.5H74V41.5H63.5V34H56V23.5h7.5V16Z" fill="#F5BB40"/>
+
+  <!-- Bottom-left : sprout in cup -->
+  <circle cx="32.5" cy="55.5" r="4.2" fill="#F5BB40"/>
+  <path d="M19.5 62h26v8.5A13 13 0 0 1 32.5 83.5 13 13 0 0 1 19.5 70.5V62Z" fill="#F5BB40"/>
+
+  <!-- Bottom-right : lines of text -->
+  <rect x="56" y="54" width="26" height="6.5" rx="1.4" fill="#57BE6D"/>
+  <rect x="56" y="64.5" width="26" height="6.5" rx="1.4" fill="#57BE6D"/>
+  <rect x="56" y="75" width="26" height="6.5" rx="1.4" fill="#57BE6D"/>
+</svg>
